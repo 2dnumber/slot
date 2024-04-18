@@ -90,7 +90,7 @@ function spin() {
 
     const spinResult = win ? "Win" : "Loss";
     const spinHistory = document.createElement('div');
-    spinHistory.textContent = `Spin Result: ${spinResult}, Symbols: ${result1}, ${result2}, ${result3}, Bet Amount: ${betAmount}, Balance: ${balance}`;
+    spinHistory.textContent = ` ${spinResult},${result1}, ${result2}, ${result3}, Bet Amount: ${betAmount}, Balance: ${balance}`;
     historyElement.appendChild(spinHistory);
   } else {
     alert("Insufficient balance. Please adjust your bet amount.");
