@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slot Game</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="slot-machine">
+    <div class="reel" id="reel1"></div>
+    <div class="reel" id="reel2"></div>
+    <div class="reel" id="reel3"></div>  </div>
+
+    <div class="balance">Balance: <span id="balance"></span></div>
+    <label for="addBalance">Add Balance:</label>
+    <input type="number" id="addBalance" min="1">
+    <button onclick="addBalance()">Add</button>
+    <label for="betAmount">Bet Amount:</label>
+    <input type="number" id="betAmount" min="1" value="1">
+    <button onclick="spin()">Spin</button>
+    <div class="history">History:</div>
+
+  <script>
+    const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '🍓']; // Add more symbols if needed
+    let balance = parseInt(localStorage.getItem('balance')) || 0;
+const balanceElement = document.getElementById('balance');
+const reel1 = document.getElementById('reel1');
+const reel2 = document.getElementById('reel2');
+const reel3 = document.getElementById('reel3');
+const historyElement = document.querySelector('.history');
+
+updateBalance(); // Initialize balance display
+
+function addBalance() {
+  const addAmount = parseInt(document.getElementById('addBalance').value);
+  if (!isNaN(addAmount) && addAmount > 0) {
+    balance += addAmount;
+    updateBalance();
+  } else {
+    alert("Please enter a valid amount to add.");
+  }
+}
+
+function spin() {
+  const betAmount = parseInt(document.getElementById('betAmount').value);
+
+  if (balance >= betAmount) { // Check if the user has enough balance to spin
+    balance -= betAmount; // Deduct bet amount from the balance
+    updateBalance();
+
+    const result1 = getRandomSymbol();
+    const result2 = getRandomSymbol();
+    const result3 = getRandomSymbol();
+
+    reel1.innerText = result1;
+    reel2.innerText = result2;
+    reel3.innerText = result3;
+
+    let win = false;
+    if (result1 === result2 && result2 === result3) {
+      win = true;
+      switch (result1) {
+        case '🍓':
+          const winningsStrawberry = betAmount * 40;
+          balance += winningsStrawberry;
+          updateBalance();
+          alert(`Congratulations! You won ${winningsStrawberry} credits!`);
+          break;
+        case '🍇':
+          const winningsGrapes = betAmount * 30;
+          balance += winningsGrapes;
+          updateBalance();
+          alert(`Congratulations! You won ${winningsGrapes} credits!`);
+          break;
+        case '🍉':
+          const winningsWatermelon = betAmount * 20;
+          balance += winningsWatermelon;
+          updateBalance();
+          alert(`Congratulations! You won ${winningsWatermelon} credits!`);
+          break;
+        default:
+          const winningsDefault = betAmount * 10;
+          balance += winningsDefault;
+          updateBalance();
+          alert(`Congratulations! You won ${winningsDefault} credits!`);
+          break;
+      }
+    }
+
+    const spinResult = win ? "Win" : "Loss";
+    const spinHistory = document.createElement('div');
+    spinHistory.textContent = `Spin Result: ${spinResult}, Symbols: ${result1}, ${result2}, ${result3}, Bet Amount: ${betAmount}, Balance: ${balance}`;
+    historyElement.appendChild(spinHistory);
+  } else {
+    alert("Insufficient balance. Please adjust your bet amount.");
+  }
+}
+
+function getRandomSymbol() {
+  const randomNum = Math.random();
+  if (randomNum < 0.9) {
+    return symbols[Math.floor(Math.random() * (symbols.length - 1))];
+  } else {
+    return symbols[Math.floor(Math.random() * symbols.length)];
+  }
+}
+
+function updateBalance() {
+  balanceElement.textContent = balance;
+  localStorage.setItem('balance', balance);
+}
+
+  </script>
+</body>
+<style>
+  .slot-machine {
+    font-size: 50px;
+  text-align: center;
+}
+
+.reel {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  margin: 10px;
+  vertical-align: top;
+}
+
+button {
+  margin-top: 20px;
+}
+
+.history {
+  margin-top: 20px;
+  text-align: left;
+}
+.balance{
+
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+}
+
+</style>
+</html>
