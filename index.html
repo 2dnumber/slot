@@ -34,7 +34,7 @@ updateBalance(); // Initialize balance display
 
 function addBalance() {
   const addAmount = parseInt(document.getElementById('addBalance').value);
-  if (!isNaN(addAmount) && addAmount > 0) {
+  if (!isNaN(addAmount) && addAmount > -1) {
     balance += addAmount;
     updateBalance();
   } else {
